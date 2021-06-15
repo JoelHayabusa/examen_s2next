@@ -1,0 +1,10 @@
+Observaciones:
+*El punto donde se indica la presentación de la vista de los menus no es muy clara y me causó confusión.
+*Este proyecto solo considera una jerarquía de dos niveles porque no se especificó si era necesario establecer un multinivel,
+ sin embargo solo basta con modificar la consulta de los padres (para que permita elegir items que tienen padre) y ajustar el algoritmo javascript que presenta el menu
+ por un algoritmo recursivo.
+*Es un hecho que podría estar mejor estructurado el código, sin embargo el tiempo de inactividad en php me obligo a aprender algunas cosas durante el desarrollo de esta prueba. 
+
+Agradecimientos:
+*A quien revise el código, gracias por tomarte la molestia de revisar el codigo, espero puedas darme una retro sin importar cual sea el resultado, siempre sirven los comentarios
+para mejorar contacto hayabusabemol@gmail.com
