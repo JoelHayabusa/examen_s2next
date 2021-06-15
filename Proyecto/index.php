@@ -1,7 +1,8 @@
 <?php
     require_once('Config/Config.php');
     require_once('Helpers/Helpers.php');
-    header('Access-Control-Allow-Origin: *');
+    header('Access-Control-Allow-Origin: *');//Necesario para evitar errores de CORS 
+
     $url = !empty($_GET['url'])?$_GET['url']:'home/home';
     $arrUrl = explode("/",$url);
     //print_r($arrUrl);

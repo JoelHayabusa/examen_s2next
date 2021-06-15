@@ -1,13 +1,12 @@
 var tableMenu;
-function getAbsolutePath() {
-    var loc = window.location;
-    var pathName = loc.pathname.substring(0, loc.pathname.lastIndexOf('/') + 1);
-    return loc.href.substring(0, loc.href.length - ((loc.pathname + loc.search + loc.hash).length - pathName.length));
-}
+
 window.addEventListener('load',function(){
-    fntDelMenu();
-    fntEditMenu();
-    console.log("Se ejecutó");
+    setTimeout(function(){ 
+                            fntDelMenu();
+                            fntEditMenu();
+                            console.log("Se ejecutó"); 
+                }, 1000);
+    
 }, false);
 document.addEventListener('DOMContentLoaded', function(){
     tableMenu =  $('#menuList').DataTable({
@@ -18,7 +17,7 @@ document.addEventListener('DOMContentLoaded', function(){
             "dataSrc":""
         },
         "ajax":{
-            "url": "http://localhost/examenS2Next/home/listar_menus",
+            "url": getAbsolutePath()+"/home/listar_menus",
             "dataSrc":""
         },
         "columns": [
@@ -35,22 +34,22 @@ document.addEventListener('DOMContentLoaded', function(){
         "order": [[0,"desc"]]
     });
     //Nuevo Menu
-    var formMenu = document.querySelector("#formAddMenu");
+    let formMenu = document.querySelector("#formAddMenu");
     formMenu.onsubmit= function(e){
         e.preventDefault();
-        var strNombre = document.querySelector("#formAddMenuNombre").value;
-        var strDescripcion = document.querySelector("#formAddMenuDescripcion").value;
-        var idPadre = document.querySelector("#cbbNombrePadre").value;
-        var idMenu = document.querySelector("#idMenu").value;
+        let strNombre = document.querySelector("#formAddMenuNombre").value;
+        let strDescripcion = document.querySelector("#formAddMenuDescripcion").value;
+        let idPadre = document.querySelector("#cbbNombrePadre").value;
+        let idMenu = document.querySelector("#idMenu").value;
        
         if(strNombre==''||strDescripcion==''){
             alert("Todos los caompos son obligatorios");
             return false;
         }
-        var request = (window.XMLHttpRequest) ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
-        var ajaxUrl= getAbsolutePath()+'Home/setMenu';
+        let request = (window.XMLHttpRequest) ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
+        let ajaxUrl= getAbsolutePath()+'Home/setMenu';
         console.log(ajaxUrl);
-        var formData = new FormData();
+        let formData = new FormData();
         formData.append("strNombre", strNombre);
         formData.append("strDescripcion", strDescripcion);
         formData.append("idPadre", idPadre);
@@ -79,7 +78,7 @@ document.addEventListener('DOMContentLoaded', function(){
     }
 });
 
-async function openAddMenuModal(){
+const openAddMenuModal = async () => {
     llenarComboPadres();
     document.querySelector('#exampleModalLongTitle').innerHTML = "Nuevo Menu ";
     document.querySelector('#btnFormAction').innerHTML = "Guardar";
@@ -89,33 +88,33 @@ async function openAddMenuModal(){
     document.querySelector("#cbbNombrePadre").value=0;
     $('#modalAddMenu').modal('show');
 }
-function openUpdateMenuModal(){
+const  openUpdateMenuModal = () => {
     document.querySelector('#exampleModalLongTitle').innerHTML = "Actualizar Menu ";
     document.querySelector('#btnFormAction').innerHTML = "Actualizar";
     
     $('#modalAddMenu').modal('show');
 }
-function closeAddMenuModal(){
+const  closeAddMenuModal = () => {
     $('#modalAddMenu').modal('hide');
 }
-function fntDelMenu(){
-    var btnDelMenu = document.querySelectorAll(".btnDelMenu");
+const fntDelMenu = () => {
+    let btnDelMenu = document.querySelectorAll(".btnDelMenu");
     //console.log(btnDelMenu);
     btnDelMenu.forEach(function(btnDelMenu){
         //console.log("uno");
         btnDelMenu.addEventListener('click', function(){
-            var idMenu = this.getAttribute("rl");
-            var request = (window.XMLHttpRequest) ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
-            var ajaxUrl= getAbsolutePath()+'Home/delMenu';
+            let idMenu = this.getAttribute("rl");
+            let request = (window.XMLHttpRequest) ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
+            let ajaxUrl= getAbsolutePath()+'Home/delMenu';
             console.log(ajaxUrl);
-            var formData = new FormData();
+            let formData = new FormData();
             formData.append("idMenu", idMenu);
             console.log(formData);
             request.open("POST", ajaxUrl, true);
             request.send(formData);
             request.onreadystatechange = function (){
                 if(request.readyState == 4 && request.status == 200){
-                    var objData = JSON.parse(request.responseText);
+                    let objData = JSON.parse(request.responseText);
                     if(objData.status)
                     {
                         tableMenu.ajax.reload(function(){
@@ -132,30 +131,31 @@ function fntDelMenu(){
         });
     });
 }
-function fntEditMenu(){
+const fntEditMenu = ()=> {
     
-    var fntEditMenu = document.querySelectorAll(".btnEditMenu");
-    //console.log(btnDelMenu);
+    let fntEditMenu = document.querySelectorAll(".btnEditMenu");
+    console.log(fntEditMenu);
     fntEditMenu.forEach(function(fntEditMenu){
         //console.log("uno");
         fntEditMenu.addEventListener('click', function(){
-            var idMenu = this.getAttribute("rl");
+            let idMenu = this.getAttribute("rl");
             document.querySelector('#idMenu').value=idMenu;
-            var request = (window.XMLHttpRequest) ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
-            var ajaxUrl= getAbsolutePath()+'home/get_menu/'+idMenu;
+            let request = (window.XMLHttpRequest) ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
+            let ajaxUrl= getAbsolutePath()+'home/get_menu/'+idMenu;
             console.log(ajaxUrl);
             request.open("GET", ajaxUrl, true);
             request.send();
             request.onreadystatechange = async function (){
                 if(request.readyState == 4 && request.status == 200){
                     console.log(request.responseText)
-                    var objData = JSON.parse(request.responseText);
+                    let objData = JSON.parse(request.responseText);
                     if(objData.status)
                     {
                         await llenarComboPadres();
                         document.querySelector("#formAddMenuNombre").value=objData.data[0].nombre;
                         document.querySelector("#formAddMenuDescripcion").value=objData.data[0].descripcion;
                         document.querySelector("#cbbNombrePadre").value=objData.data[0].id_menu_padre;
+                        $( "#cbbNombrePadre" ).val(objData.data[0].id_menu_padre);
                         openUpdateMenuModal();
                     }else{
                         alert("No se pudieron recuperar los datos");
@@ -168,17 +168,17 @@ function fntEditMenu(){
     });
 }
 async function llenarComboPadres(){
-    var request = (window.XMLHttpRequest) ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
-    var ajaxUrl= getAbsolutePath()+'home/listar_menus';
+    let request = (window.XMLHttpRequest) ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
+    let ajaxUrl= getAbsolutePath()+'home/listar_padres';
     console.log(ajaxUrl);
     request.open("GET", ajaxUrl, true);
     request.send();
     request.onreadystatechange = function (){
         if(request.readyState == 4 && request.status == 200){
             console.log(request.responseText)
-            var objData = JSON.parse(request.responseText);
+            let objData = JSON.parse(request.responseText);
 
-                var code ='<option selected value="0">Seleccionar</option>';
+            let code ='<option selected value="0">Seleccionar</option>';
                 for (let index = 0; index < objData.length; index++) {
                    code+='<option  value="'+objData[index].id+'">'+objData[index].nombre+'</option>'
                 }

@@ -38,7 +38,12 @@
             die();
 
         }
-        
+        public function listar_padres()
+        {
+            $arrData = $this->model->getPadres();
+            echo json_encode($arrData, JSON_UNESCAPED_UNICODE);
+            die();
+        }
         public function setMenu()
         {
             $strMenuNombre = strClean($_POST['strNombre']);
@@ -74,21 +79,6 @@
             die();
             
         }
-        // public function insertar()
-        // {
-        //     $data = $this->model->setMenu('MyMenu', 'Mi menu de prueba');
-        //     print_r($data);
-        // }
-        // public function actualizar()
-        // {
-        //     $data = $this->model->updateMenu(6,'Se actualizo', 'Mi menu de prueba ya no está igual');
-        //     print_r($data);
-        // }
-        // public function borrar()
-        // {
-        //     $data = $this->model->deleteMenu(5);
-        //     print_r($data);
-        // }
-        
-    } 
+    }
+
 ?>

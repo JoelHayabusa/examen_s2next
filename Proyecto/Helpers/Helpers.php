@@ -12,6 +12,12 @@
         $format .= print_r('</pre>');
         return $format;
     }
+    function getMainModule(string $name_module, $data)
+    {
+        $main_module = "Views/Main/{$name_module}.php";
+        require_once $main_module;
+    }
+    //Importa las ventanas modales usando su nombre
     function getModal(string $nameModal, $data){
         $view_modal = "Views/Modals/{$nameModal}.php";
         require_once $view_modal;

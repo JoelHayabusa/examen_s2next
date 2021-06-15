@@ -40,13 +40,19 @@ class HomeModel extends Mysql
     }
     public function getMenusList()
     {
-        $query = "SELECT cat.id, cat.nombre, cat.descripcion, cat.fch_modificacion, cat_menu.nombre as nombrePadre  FROM cat_menu RIGHT JOIN  cat_menu as cat ON cat_menu.Id = cat.id_menu_padre;";
+        $query = "SELECT cat.id, cat.nombre, cat.descripcion, cat.fch_modificacion, cat_menu.nombre as nombrePadre, cat_menu.id as id_menu_padre  FROM cat_menu RIGHT JOIN  cat_menu as cat ON cat_menu.Id = cat.id_menu_padre;";
         $request = $this->select_all($query);
         return $request;
     }
     public function getMenu(int $idMenu)
     {
         $query = "SELECT * FROM cat_menu WHERE id=".$idMenu;
+        $request = $this->select_all($query);
+        return $request;
+    }
+    public function getPadres()
+    {
+        $query = "SELECT cat.id, cat.nombre, cat.descripcion, cat.fch_modificacion, cat_menu.nombre as nombrePadre, cat_menu.id as id_menu_padre  FROM cat_menu RIGHT JOIN  cat_menu as cat ON cat_menu.Id = cat.id_menu_padre WHERE  cat_menu.id IS NULL;";
         $request = $this->select_all($query);
         return $request;
     }
